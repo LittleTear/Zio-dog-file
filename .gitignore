@@ -15,6 +15,7 @@ modules/file-http/target
 # upload file into this folder
 static/
 logs/
+uploaded
 assembly-deploy-dev.sh
 native-packager-deploy-dev.sh
 docker-deploy.sh
