@@ -1,0 +1,21 @@
+.bloop
+.metals
+.idea
+target
+project/target
+project/project
+project/metals.sbt
+Makefile
+.bsp
+.idea
+null/
+# config
+modules/file-http/src/main/resources/application.conf
+modules/file-http/target
+# upload file into this folder
+static/
+logs/
+assembly-deploy-dev.sh
+native-packager-deploy-dev.sh
+docker-deploy.sh
+docker-image-upload.sh

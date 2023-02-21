@@ -1,0 +1,12 @@
+url_file_path {
+  mode_serve_url="http://0.0.0.0:5002/ber_predict_test"
+  tao_ge_url="http://0.0.0.0:8084/t/simple"
+  long_ge_url="http://0.0.0.0:8096/getKnowledgeGraph"
+  input_data_path="D:/mm.csv"
+  output_data_path="D:/result.txt"
+}
+
+api {
+    host = "0.0.0.0"
+    port = 8089
+}
