@@ -6,7 +6,6 @@ import org.littletear.dogfile.route.{ApiRoutes, ApiRoutesImpl}
 import org.littletear.dogfile.service.impl.{FileApiServiceImpl, HttpClientImpl, PostRequestImpl}
 import org.littletear.dogfile.config.Config
 import zio._
-import zio.Console.printLine
 import zio.logging.LogFormat
 import zio.logging.backend.SLF4J
 import zio.interop.catz._
