@@ -1,3 +1,4 @@
+package org.littletear.dogfile
 import org.http4s.blaze.server.BlazeServerBuilder
 import org.http4s.server.Router
 import org.littletear.dogfile.api.EndPointImpl

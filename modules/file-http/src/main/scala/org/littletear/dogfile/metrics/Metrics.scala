@@ -1,4 +1,4 @@
-//package org.littletear.dogfile.metrics
+package org.littletear.dogfile.metrics
 //
 //import org.littletear.dogfile.error.Errors._
 //import com.kaspersky.build.BuildInfo

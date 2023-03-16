@@ -80,4 +80,8 @@ object Dependencies {
     "com.github.tototoshi"        %% "scala-csv"           % Version.`scala-csv`,
     "io.kontainers"               %% "purecsv"             % Version.purecsv
   )
+
+  lazy val scalaJS : Seq[ModuleID] = Seq(
+
+  )
 }

@@ -1,4 +1,4 @@
-//package org.littletear.dogfile.metrics
+package org.littletear.dogfile.metrics
 //
 //import com.kaspersky.analyzer.config.Config
 //import com.kaspersky.analyzer.errors.Errors.{Error, MetricsError}
