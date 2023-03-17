@@ -14,13 +14,14 @@ import zio.interop.catz._
 
 object ServerMain extends ZIOAppDefault {
   override val bootstrap = SLF4J.slf4j(LogLevel.Debug, LogFormat.colored)
+  private val slf4jLogger = org.slf4j.LoggerFactory.getLogger("SLF4J-LOGGER")
 
   override def run: ZIO[Environment with ZIOAppArgs with Scope, Any, Any] =
     (for {
       _ <- ZIO.logInfo("start server ...")
-      apiRoute <- ZIO.service[ApiRoutes]
+//      apiRoute <- ZIO.service[ApiRoutes]
       config   <- ZIO.service[Config]
-      routes   <- apiRoute.routes()
+      routes   <- ApiRoutes.routes()
       serverFibre <- ZIO.executor
         .flatMap{excuter =>
           BlazeServerBuilder[Task]
