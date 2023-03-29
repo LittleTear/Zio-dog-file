@@ -7,6 +7,7 @@ import org.littletear.dogfile.route.{ApiRoutes, ApiRoutesImpl}
 import org.littletear.dogfile.service.impl.{FileApiServiceImpl, HttpClientImpl, PostRequestImpl}
 import org.littletear.dogfile.config.Config
 import zio._
+import zio.http._
 import zio.logging.LogFormat
 import zio.logging.backend.SLF4J
 import zio.interop.catz._
@@ -20,22 +21,9 @@ object ServerMain extends ZIOAppDefault {
     (for {
       _ <- ZIO.logInfo("start server ...")
 //      apiRoute <- ZIO.service[ApiRoutes]
-      config   <- ZIO.service[Config]
-      routes   <- ApiRoutes.routes()
-      serverFibre <- ZIO.executor
-        .flatMap{excuter =>
-          BlazeServerBuilder[Task]
-            .withExecutionContext(excuter.asExecutionContext)
-            .bindHttp(config.api.port,config.api.host)
-            .withHttpApp(
-              Router[Task](
-                "" -> routes
-              ).orNotFound
-            )
-            .serve
-            .compile
-            .drain
-        }.fork
+      config       <- ZIO.service[Config]
+      routes      <- ApiRoutes.zioRoutes()
+      serverFibre <- Server.serve(routes.withDefaultErrorResponse).fork
       _ <- Console.readLine("Press enter to stop the server\n")
       _ <- Console.printLine("Interrupting server")
       _ <- serverFibre.interrupt
@@ -48,19 +36,9 @@ object ServerMain extends ZIOAppDefault {
         HttpClientImpl.live,
         Config.live,
         HttpClientImpl.clientLive,
-        SwaggerBuilderImpl.live
+        SwaggerBuilderImpl.live,
+        Server.default
       )
-//    (for{
-//    _       <- ZIO.logInfo("start server ...")
-//    fileApi <- ZIO.service[FileApiServiceImpl]
-//    _       <- fileApi.mainFileServe()
-//  } yield ())
-//      .provide(
-//        FileApiServiceImpl.live,
-//        PostRequestImpl.live,
-//        HttpClientImpl.live,
-//        Config.live,
-//        HttpClientImpl.clientLive
-//      )
+
 
 }

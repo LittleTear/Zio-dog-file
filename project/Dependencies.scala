@@ -5,7 +5,7 @@ object Dependencies {
     val zio = "2.0.7"
     val `zio-logging` = "2.1.8"
     val `zio-http` = "0.0.5"
-    val tapir = "1.2.8"
+    val tapir = "1.2.10"
     val `akka-http` = "10.2.10"
     val akka = "2.6.20"
     val circe = "0.14.3"
@@ -49,7 +49,7 @@ object Dependencies {
     "com.softwaremill.sttp.tapir" %% "tapir-swagger-ui-bundle" % Version.tapir,
     "com.softwaremill.sttp.tapir" %% "tapir-asyncapi-docs"     % Version.tapir,
     "com.softwaremill.sttp.tapir" %% "tapir-zio"               % Version.tapir,
-//    "com.softwaremill.sttp.tapir" %% "tapir-zio-http-server"   % Version.tapir,
+    "com.softwaremill.sttp.tapir" %% "tapir-zio-http-server"   % Version.tapir,
     "com.softwaremill.sttp.tapir" %% "tapir-http4s-server-zio" % Version.tapir
   )
 
