@@ -4,7 +4,7 @@ object Dependencies {
   object Version{
     val zio = "2.0.7"
     val `zio-logging` = "2.1.8"
-    val `zio-http` = "0.0.5"
+    val `zio-http` = "0.0.4"
     val tapir = "1.2.8"
     val `akka-http` = "10.2.10"
     val akka = "2.6.20"
@@ -39,7 +39,8 @@ object Dependencies {
     "dev.zio" %% "zio-config-magnolia"         % Version.`zio-config`,
     "dev.zio" %% "zio-config-typesafe"         % Version.`zio-config`,
 //    "dev.zio" %% "zio-json"                    % Version.`zio-json`,
-    "dev.zio" %% "zio-interop-cats"            % Version.`zio-interop-cats`
+    "dev.zio" %% "zio-interop-cats"            % Version.`zio-interop-cats`,
+    "dev.zio" %% "zio-streams"                 % Version.zio
   )
   lazy val tapirDeps: Seq[ModuleID] = Seq(
     "com.softwaremill.sttp.tapir" %% "tapir-core"              % Version.tapir,
@@ -49,7 +50,7 @@ object Dependencies {
     "com.softwaremill.sttp.tapir" %% "tapir-swagger-ui-bundle" % Version.tapir,
     "com.softwaremill.sttp.tapir" %% "tapir-asyncapi-docs"     % Version.tapir,
     "com.softwaremill.sttp.tapir" %% "tapir-zio"               % Version.tapir,
-//    "com.softwaremill.sttp.tapir" %% "tapir-zio-http-server"   % Version.tapir,
+    "com.softwaremill.sttp.tapir" %% "tapir-zio-http-server"   % Version.tapir,
     "com.softwaremill.sttp.tapir" %% "tapir-http4s-server-zio" % Version.tapir
   )
 

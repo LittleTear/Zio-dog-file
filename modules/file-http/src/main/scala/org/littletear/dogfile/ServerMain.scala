@@ -22,6 +22,8 @@ object ServerMain extends ZIOAppDefault {
 //      apiRoute <- ZIO.service[ApiRoutes]
       config   <- ZIO.service[Config]
       routes   <- ApiRoutes.routes()
+//      stream   <-  ZIO.service[ApiRoutesImpl]
+//      streamRoutes <- stream.streamRoutes
       serverFibre <- ZIO.executor
         .flatMap{excuter =>
           BlazeServerBuilder[Task]

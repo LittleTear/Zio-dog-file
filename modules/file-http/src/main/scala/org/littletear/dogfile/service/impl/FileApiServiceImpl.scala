@@ -103,7 +103,20 @@ case class FileApiServiceImpl(postReq: PostRequest,config: Config) extends FileA
     } yield ()
   }
 
+
+  override def fileIsAnalyzed(filePath: String): UIO[Boolean] = {
+    for {
+      _ <- ZIO.logInfo("start check file length")
+      oldLength = new File(filePath).length()
+      _ <- ZIO.logInfo("File Uploading >>" + filePath + ": " + oldLength)
+      _ <- ZIO.sleep(3.seconds)
+      newLength = new File(filePath).length()
+      _ <- ZIO.logInfo("File Uploading >>" + filePath + ": " + newLength)
+    } yield oldLength == newLength
+
   }
+
+}
 
 
 

@@ -1,11 +1,16 @@
 package org.littletear.dogfile.api
 import org.littletear.dogfile.domain.{Animal, FileForm, UploadResult}
 import org.littletear.dogfile.service.FileApiService
+import sttp.capabilities.zio.ZioStreams
 import sttp.tapir.generic.auto._
 import sttp.tapir.json.circe.jsonBody
-import sttp.tapir.query
+import sttp.tapir.{CodecFormat, query}
 import sttp.tapir.ztapir._
 import zio._
+import zio.stream.ZStream
+
+import java.io.IOException
+import java.nio.charset.StandardCharsets
 
 case class EndPointImpl(fileService:FileApiService[FileForm]) extends ComEndPoint{
 
@@ -54,6 +59,43 @@ case class EndPointImpl(fileService:FileApiService[FileForm]) extends ComEndPoin
         }
     )
 
+  }
+
+  override def checkFileIsAnalyzeComplete: UIO[ZServerEndpoint[Any, Any]] = {
+    ZIO.succeed(
+      endpoint
+        .get
+        .in("isCompleted" / query[String]("filePath"))
+        .out(jsonBody[UploadResult])
+        .errorOut(stringBody)
+        .zServerLogic { filePath =>
+          for{
+            isCompleted  <- fileService.fileIsAnalyzed(filePath)
+            result       <- if (isCompleted)
+
+                   ZIO.succeed(UploadResult("分析完成", filePath.substring(0, filePath.lastIndexOf("/") + 1) + "result.txt"))
+            else   ZIO.succeed(UploadResult("未分析完成", filePath.substring(0, filePath.lastIndexOf("/") + 1) + "result.txt"))
+          } yield result
+        }
+    )
+  }
+
+  override def downloadFile: UIO[ZServerEndpoint[Nothing, ZioStreams]] = {
+    ZIO.succeed(
+      endpoint
+        .get
+        .in("download" / query[String]("filePath"))
+        .out(header[String]("Content-Type"))
+        .out(header[String]("Content-Disposition"))
+        .out(streamTextBody(ZioStreams)(CodecFormat.TextPlain(), Some(StandardCharsets.UTF_8)))
+        .errorOut(stringBody)
+        .zServerLogic {filePath =>
+          val contentType = "application/octet-stream"
+          val disposition = s"attachment; filename=$filePath"
+          val bStream: ZStream[Any, IOException, Byte] = ZStream.fromResource(filePath)
+          ZIO.succeed((contentType,disposition,bStream))
+        }
+    )
   }
 }
 
