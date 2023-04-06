@@ -2,7 +2,7 @@ package org.littletear.dogfile.api
 
 import sttp.capabilities.zio.ZioStreams
 import sttp.tapir.ztapir.ZServerEndpoint
-import zio.UIO
+import zio.{UIO, ZIO}
 import zio.macros.accessible
 
 @accessible
@@ -15,5 +15,5 @@ trait ComEndPoint {
 
   def checkFileIsAnalyzeComplete: UIO[ZServerEndpoint[Any, Any]]
 
-  def downloadFile: UIO[ZServerEndpoint[Nothing, ZioStreams]]
+  def downloadFile: ZIO[Any,Nothing,ZServerEndpoint[Any, ZioStreams]]
 }

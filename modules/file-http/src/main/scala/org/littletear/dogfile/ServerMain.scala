@@ -19,15 +19,12 @@ object ServerMain extends ZIOAppDefault {
   override def run: ZIO[Environment with ZIOAppArgs with Scope, Any, Any] =
     (for {
       _ <- ZIO.logInfo("start server ...")
-//      apiRoute <- ZIO.service[ApiRoutes]
       config   <- ZIO.service[Config]
       routes   <- ApiRoutes.routes()
-//      stream   <-  ZIO.service[ApiRoutesImpl]
-//      streamRoutes <- stream.streamRoutes
       serverFibre <- ZIO.executor
-        .flatMap{excuter =>
+        .flatMap{executer =>
           BlazeServerBuilder[Task]
-            .withExecutionContext(excuter.asExecutionContext)
+            .withExecutionContext(executer.asExecutionContext)
             .bindHttp(config.api.port,config.api.host)
             .withHttpApp(
               Router[Task](
@@ -38,9 +35,9 @@ object ServerMain extends ZIOAppDefault {
             .compile
             .drain
         }.fork
-      _ <- Console.readLine("Press enter to stop the server\n")
-      _ <- Console.printLine("Interrupting server")
-      _ <- serverFibre.interrupt
+//      _ <- Console.readLine("Press enter to stop the server\n")
+//      _ <- Console.printLine("Interrupting server")
+      _ <- serverFibre.join
     } yield ())
       .provide(
         EndPointImpl.live,
@@ -52,17 +49,4 @@ object ServerMain extends ZIOAppDefault {
         HttpClientImpl.clientLive,
         SwaggerBuilderImpl.live
       )
-//    (for{
-//    _       <- ZIO.logInfo("start server ...")
-//    fileApi <- ZIO.service[FileApiServiceImpl]
-//    _       <- fileApi.mainFileServe()
-//  } yield ())
-//      .provide(
-//        FileApiServiceImpl.live,
-//        PostRequestImpl.live,
-//        HttpClientImpl.live,
-//        Config.live,
-//        HttpClientImpl.clientLive
-//      )
-
 }

@@ -44,7 +44,7 @@ case class FileApiServiceImpl(postReq: PostRequest,config: Config) extends FileA
         .readCSVFromFileName(filePath, headers = Headers.ReadAndIgnore)
         .map {
           case Success(value) => value
-          case Failure(exception) => FileSchema("", "")
+          case Failure(exception) => FileSchema("")
         }
     }
   }
@@ -73,7 +73,7 @@ case class FileApiServiceImpl(postReq: PostRequest,config: Config) extends FileA
             taoResult <- taoResultFiber.join
             _ <- ZIO.logInfo(s"taoResult is $taoResult")
             _ <- ZIO.logInfo("start writing a row on file")
-            _ <- writeFile[String](Seq(fileSchema.area,text,taoResult,StringContext.processEscapes(modelResult.trim)),outPath)
+            _ <- writeFile[String](Seq(text,taoResult,StringContext.processEscapes(modelResult.trim)),outPath)
           } yield ()
       }
     }
@@ -109,7 +109,7 @@ case class FileApiServiceImpl(postReq: PostRequest,config: Config) extends FileA
       _ <- ZIO.logInfo("start check file length")
       oldLength = new File(filePath).length()
       _ <- ZIO.logInfo("File Uploading >>" + filePath + ": " + oldLength)
-      _ <- ZIO.sleep(3.seconds)
+      _ <- ZIO.sleep(5.seconds)
       newLength = new File(filePath).length()
       _ <- ZIO.logInfo("File Uploading >>" + filePath + ": " + newLength)
     } yield oldLength == newLength

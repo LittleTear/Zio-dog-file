@@ -5,6 +5,8 @@ import zio.macros.accessible
 
 trait ApiRoutes {
   def routes(): IO[Error, HttpRoutes[Task]]
+
+  def streamRoutes(): IO[Nothing, HttpRoutes[Task]]
 }
 
 object ApiRoutes{

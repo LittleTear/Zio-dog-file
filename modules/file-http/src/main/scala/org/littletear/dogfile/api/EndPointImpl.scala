@@ -9,7 +9,7 @@ import sttp.tapir.ztapir._
 import zio._
 import zio.stream.ZStream
 
-import java.io.IOException
+import java.io.{File, FileReader, IOException}
 import java.nio.charset.StandardCharsets
 
 case class EndPointImpl(fileService:FileApiService[FileForm]) extends ComEndPoint{
@@ -18,7 +18,7 @@ case class EndPointImpl(fileService:FileApiService[FileForm]) extends ComEndPoin
     ZIO.succeed(
       endpoint
         .post
-        .in("file")
+        .in("upload")
         .in(multipartBody[FileForm])
         .out(jsonBody[UploadResult])
         .errorOut(stringBody)
@@ -80,7 +80,7 @@ case class EndPointImpl(fileService:FileApiService[FileForm]) extends ComEndPoin
     )
   }
 
-  override def downloadFile: UIO[ZServerEndpoint[Nothing, ZioStreams]] = {
+  override def downloadFile: ZIO[Any,Nothing,ZServerEndpoint[Any, ZioStreams]]= {
     ZIO.succeed(
       endpoint
         .get
@@ -90,9 +90,10 @@ case class EndPointImpl(fileService:FileApiService[FileForm]) extends ComEndPoin
         .out(streamTextBody(ZioStreams)(CodecFormat.TextPlain(), Some(StandardCharsets.UTF_8)))
         .errorOut(stringBody)
         .zServerLogic {filePath =>
+          val fileName = new File(filePath).getName
           val contentType = "application/octet-stream"
-          val disposition = s"attachment; filename=$filePath"
-          val bStream: ZStream[Any, IOException, Byte] = ZStream.fromResource(filePath)
+          val disposition = s"attachment; filename=$fileName"
+          val bStream: ZStream[Any, Throwable, Byte] = ZStream.fromFileName(filePath)
           ZIO.succeed((contentType,disposition,bStream))
         }
     )

@@ -25,7 +25,7 @@ case class SwaggerBuilderImpl(config: Config) extends SwaggerBuilder {
         )
       ).fromEndpoints[Task](
         endpoints = endpoints,
-        title = "KTAE analyzer API",
+        title = "ljc analyzer API",
         version = BuildInfo.version
       )
     )

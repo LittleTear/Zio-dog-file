@@ -20,10 +20,10 @@ case class ApiRoutesImpl(endPoint:ComEndPoint,swaggerBuilder: SwaggerBuilder) ex
       api           = ZHttp4sServerInterpreter().from(routes ++ swagger).toRoutes
     } yield api
 
-  def streamRoutes=
+  override def streamRoutes: ZIO[Any, Nothing, HttpRoutes[Task]]=
     for {
       download      <- endPoint.downloadFile
-      streamApi = ZioHttpInterpreter().toApp(download)
+      streamApi = ZHttp4sServerInterpreter().from(download).toRoutes
     } yield streamApi
 }
 

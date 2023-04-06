@@ -5,7 +5,7 @@ object Dependencies {
     val zio = "2.0.7"
     val `zio-logging` = "2.1.8"
     val `zio-http` = "0.0.4"
-    val tapir = "1.2.8"
+    val tapir = "1.2.12"
     val `akka-http` = "10.2.10"
     val akka = "2.6.20"
     val circe = "0.14.3"
@@ -24,7 +24,8 @@ object Dependencies {
     val purecsv = "1.3.10"
     val `zio-config` = "3.0.7"
     val `zio-json`  = "0.4.2"
-    val `zio-interop-cats` = "23.0.0.1"
+    val `zio-interop-cats` = "23.0.03"
+    val `zio-streams` = "2.0.10"
   }
 
   lazy val zioDeps: Seq[ModuleID] = Seq(
@@ -40,7 +41,7 @@ object Dependencies {
     "dev.zio" %% "zio-config-typesafe"         % Version.`zio-config`,
 //    "dev.zio" %% "zio-json"                    % Version.`zio-json`,
     "dev.zio" %% "zio-interop-cats"            % Version.`zio-interop-cats`,
-    "dev.zio" %% "zio-streams"                 % Version.zio
+    "dev.zio" %% "zio-streams"                 % Version.`zio-streams`
   )
   lazy val tapirDeps: Seq[ModuleID] = Seq(
     "com.softwaremill.sttp.tapir" %% "tapir-core"              % Version.tapir,
