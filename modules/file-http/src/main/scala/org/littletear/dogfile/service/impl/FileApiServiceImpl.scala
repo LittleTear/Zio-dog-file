@@ -35,7 +35,7 @@ case class FileApiServiceImpl(postReq: PostRequest, config: Config) extends File
   private def saveFile(fileName: String, f: File): ZIO[Any, Nothing, String] = ZIO.succeed {
     import os._
     val sourceFile = Path(f)
-    val destDir = os.pwd / "uploaded" / DateUtil.getDayDateString / DateUtil.getHourDateString.replace(":", "-") / UuidUtil.getUuid32
+    val destDir = os.pwd / "uploaded" / DateUtil.getDayDateString() / DateUtil.getHourDateString().replace(":", "-") / UuidUtil.getUuid32
     val destFile = destDir / fileName
     os.makeDir.all(destDir)
     os.copy(sourceFile, destFile)
