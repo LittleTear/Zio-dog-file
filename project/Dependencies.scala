@@ -27,6 +27,7 @@ object Dependencies {
     val `zio-interop-cats` = "23.0.03"
     val `zio-streams` = "2.0.10"
     val spoiwo = "2.2.1"
+    val poi = "4.1.2"
   }
 
   lazy val zioDeps: Seq[ModuleID] = Seq(
@@ -82,7 +83,10 @@ object Dependencies {
     "org.http4s"                  %% "http4s-circe"        % Version.http4sBlazeVersion,
     "com.github.tototoshi"        %% "scala-csv"           % Version.`scala-csv`,
     "io.kontainers"               %% "purecsv"             % Version.purecsv,
-    "com.norbitltd"               %% "spoiwo"              % Version.spoiwo
+//    "com.norbitltd"               %% "spoiwo"              % Version.spoiwo,
+  "org.apache.poi"               % "poi"                   % Version.poi,
+  "org.apache.poi"               % "poi-ooxml"             % Version.poi
+
   )
 
   lazy val scalaJS : Seq[ModuleID] = Seq(
