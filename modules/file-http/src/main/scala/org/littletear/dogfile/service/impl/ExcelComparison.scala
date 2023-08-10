@@ -8,7 +8,7 @@ object ExcelComparison {
   def main(args: Array[String]): Unit = {
     val sourceExcelFile = "E:\\测试文件\\工业互联网项目总表.xlsm"
     val targetExcelFile = "E:\\测试文件\\工业互联网项目总表ljc.xlsm"
-    val outputExcelFile = "E:\\测试文件\\工业互联网项目总表out.xlsm"
+    val outputExcelFile = "E:\\测试文件\\工业互联网项目总表out.xlsx"
 
     // 第一步：读取第一个Excel文件中的“项目总表”sheet页内容和表格颜色
     val sourceData = readExcelData(sourceExcelFile, "1-项目总表")
@@ -115,9 +115,11 @@ object ExcelComparison {
                     ): Unit = {
     // 使用Apache POI库创建新的Excel文件，并将数据和颜色写入到指定sheet页中
     // 参考：https://poi.apache.org/apidocs/4.1/org/apache/poi/ss/usermodel/Workbook.html
-    val workbook = WorkbookFactory.create(new File(file))
+    val workbook = WorkbookFactory.create(true)
     val sheet = workbook.createSheet(sheetName)
-
+//    val newExcelFileOutputStream = new FileOutputStream(file)
+//    workbook.write(newExcelFileOutputStream)
+//    newExcelFileOutputStream.close()
     // 写入数据
     data.zipWithIndex.foreach { case (row, rowIndex) =>
       val excelRow = sheet.createRow(rowIndex)
@@ -128,17 +130,17 @@ object ExcelComparison {
     }
 
     // 设置单元格颜色
-    cellColors.foreach { case ((rowIndex, colIndex), color) =>
-      val excelRow = sheet.getRow(rowIndex) match {
-        case null => sheet.createRow(rowIndex)
-        case existingRow => existingRow
-      }
-      val cell = excelRow.createCell(colIndex)
-      val cellStyle = workbook.createCellStyle()
-      cellStyle.setFillForegroundColor(color)
-      cellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND)
-      cell.setCellStyle(cellStyle)
-    }
+//    cellColors.foreach { case ((rowIndex, colIndex), color) =>
+//      val excelRow = sheet.getRow(rowIndex) match {
+//        case null => sheet.createRow(rowIndex)
+//        case existingRow => existingRow
+//      }
+//      val cell = excelRow.createCell(colIndex)
+//      val cellStyle = workbook.createCellStyle()
+//      cellStyle.setFillForegroundColor(color)
+//      cellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND)
+//      cell.setCellStyle(cellStyle)
+//    }
 
     // 保存数据到文件
     val fileOut = new FileOutputStream(file)
