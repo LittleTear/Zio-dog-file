@@ -16,4 +16,6 @@ trait ComEndPoint {
   def checkFileIsAnalyzeComplete: UIO[ZServerEndpoint[Any, Any]]
 
   def downloadFile: ZIO[Any,Nothing,ZServerEndpoint[Any, ZioStreams]]
+
+  def excelComparison: UIO[ZServerEndpoint[Any, Any]]
 }

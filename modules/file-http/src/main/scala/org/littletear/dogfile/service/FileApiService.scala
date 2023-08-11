@@ -8,4 +8,6 @@ trait FileApiService[T]{
   def analyzeFile(filePath:String,model:String): ZIO[Any, Throwable, Unit]
 
   def fileIsAnalyzed(filePath:String): UIO[Boolean]
+
+  def excelAnalyzed(targetExcelPath: String,newExcelPath: String): ZIO[Any, Throwable, String]
 }

@@ -15,7 +15,8 @@ case class ApiRoutesImpl(endPoint:ComEndPoint,swaggerBuilder: SwaggerBuilder) ex
       analyze       <- endPoint.analyzeEndPoint
       checkComplete <- endPoint.checkFileIsAnalyzeComplete
       download      <- endPoint.downloadFile
-      routes        =  List(uploadFile,health,analyze,checkComplete,download)
+      excelAnalyze  <- endPoint.excelComparison
+      routes        =  List(uploadFile,health,analyze,checkComplete,download,excelAnalyze)
       swagger       <- swaggerBuilder.build(routes.map(_.endpoint))
       api           = ZHttp4sServerInterpreter().from(routes ++ swagger).toRoutes
     } yield api

@@ -98,6 +98,24 @@ case class EndPointImpl(fileService:FileApiService[FileForm]) extends ComEndPoin
         }
     )
   }
+
+  override def excelComparison: UIO[ZServerEndpoint[Any, Any]]  = {
+    ZIO.succeed(
+      endpoint
+        .get
+        .in("excelAnalyze" / query[String]("targetExcelPath") / query[String]("newExcelPath"))
+        .out(jsonBody[UploadResult])
+        .errorOut(stringBody)
+        .zServerLogic { tp =>
+          val targetExcelPath = tp._1
+          val newExcelPath = tp._2
+          for{
+            outputPath <- fileService.excelAnalyzed(targetExcelPath, newExcelPath).mapError(t => "Excel 文件合并失败")
+            result     <- ZIO.succeed(UploadResult("分析完成", outputPath))
+          } yield result
+        }
+    )
+  }
 }
 
 object EndPointImpl{

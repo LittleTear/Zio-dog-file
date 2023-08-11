@@ -13,6 +13,9 @@ import scala.util.{Failure, Success}
 import io.circe.syntax._
 import org.littletear.dogfile.config.Config
 
+import java.net.{URLDecoder, URLEncoder}
+import java.nio.charset.StandardCharsets
+
 
 case class FileApiServiceImpl(postReq: PostRequest, config: Config) extends FileApiService[FileForm] {
   implicit object MyFormat extends DefaultCSVFormat {
@@ -24,6 +27,9 @@ case class FileApiServiceImpl(postReq: PostRequest, config: Config) extends File
       _ <- ZIO.logInfo("got a file")
       p = fileForm.fileField
       fileName = p.fileName.fold("unknown-filename")(identity)
+//      encodedFileName = URLEncoder.encode(fileName, StandardCharsets.UTF_8.toString)
+//      decodedFileName = URLDecoder.decode(encodedFileName, StandardCharsets.UTF_8.toString)
+
       file = p.body
       //      tp =(fileName, file)
       //      _ <- Some(tp).fold(ZIO.logError("no file (maybe unprocessable filename?)"))((saveFile _).tupled)
@@ -129,6 +135,17 @@ case class FileApiServiceImpl(postReq: PostRequest, config: Config) extends File
 
   }
 
+  override def excelAnalyzed(targetExcelPath: String, newExcelPath: String): ZIO[Any, Throwable, String] ={
+    for{
+      _  <- ZIO.logInfo("start analyzing excel")
+       destDir = os.pwd / "uploaded" / DateUtil.getDayDateString() / DateUtil.getHourDateString().replace(":", "-") / UuidUtil.getUuid32
+       daytime = DateUtil.getDayDateString()
+       outfileName = s"IndustrialInternet$daytime.xlsm"
+       destFile = destDir / outfileName
+       _ = os.makeDir.all(destDir)
+      _  <- ZIO.succeed(ExcelComparison_v3.excelComparisonStart(targetExcelPath,newExcelPath,destFile.toString()))
+    } yield destFile.toString
+  }
 }
 
 
